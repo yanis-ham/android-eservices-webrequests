@@ -9,11 +9,11 @@ import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 
-public class SongDisplayLocalDataSource {
+public class BookDisplayLocalDataSource {
 
     private BookDatabase bookDatabase;
 
-    public SongDisplayLocalDataSource(BookDatabase bookDatabase) {
+    public BookDisplayLocalDataSource(BookDatabase bookDatabase) {
         this.bookDatabase = bookDatabase;
     }
 

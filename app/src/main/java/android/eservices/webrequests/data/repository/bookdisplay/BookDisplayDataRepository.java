@@ -3,7 +3,7 @@ package android.eservices.webrequests.data.repository.bookdisplay;
 import android.eservices.webrequests.data.api.model.Book;
 import android.eservices.webrequests.data.api.model.BookSearchResponse;
 import android.eservices.webrequests.data.entity.BookEntity;
-import android.eservices.webrequests.data.repository.bookdisplay.local.SongDisplayLocalDataSource;
+import android.eservices.webrequests.data.repository.bookdisplay.local.BookDisplayLocalDataSource;
 import android.eservices.webrequests.data.repository.bookdisplay.mapper.BookToBookEntityMapper;
 import android.eservices.webrequests.data.repository.bookdisplay.remote.BookDisplayRemoteDataSource;
 
@@ -18,14 +18,14 @@ import io.reactivex.functions.Function;
 
 public class BookDisplayDataRepository implements BookDisplayRepository {
 
-    private SongDisplayLocalDataSource songDisplayLocalDataSource;
+    private BookDisplayLocalDataSource bookDisplayLocalDataSource;
     private BookDisplayRemoteDataSource bookDisplayRemoteDataSource;
     private BookToBookEntityMapper bookToBookEntityMapper;
 
-    public BookDisplayDataRepository(SongDisplayLocalDataSource songDisplayLocalDataSource,
+    public BookDisplayDataRepository(BookDisplayLocalDataSource bookDisplayLocalDataSource,
                                      BookDisplayRemoteDataSource bookDisplayRemoteDataSource,
                                      BookToBookEntityMapper bookToBookEntityMapper) {
-        this.songDisplayLocalDataSource = songDisplayLocalDataSource;
+        this.bookDisplayLocalDataSource = bookDisplayLocalDataSource;
         this.bookDisplayRemoteDataSource = bookDisplayRemoteDataSource;
         this.bookToBookEntityMapper = bookToBookEntityMapper;
     }
@@ -33,7 +33,7 @@ public class BookDisplayDataRepository implements BookDisplayRepository {
     @Override
     public Single<BookSearchResponse> getBookSearchResponse(String keywords) {
         return bookDisplayRemoteDataSource.getBookSearchResponse(keywords)
-                .zipWith(songDisplayLocalDataSource.getFavoriteIdList(), new BiFunction<BookSearchResponse, List<String>, BookSearchResponse>() {
+                .zipWith(bookDisplayLocalDataSource.getFavoriteIdList(), new BiFunction<BookSearchResponse, List<String>, BookSearchResponse>() {
                     @Override
                     public BookSearchResponse apply(BookSearchResponse bookSearchResponse, List<String> idList) throws Exception {
                         for (Book book : bookSearchResponse.getBookList()) {
@@ -48,7 +48,7 @@ public class BookDisplayDataRepository implements BookDisplayRepository {
 
     @Override
     public Flowable<List<BookEntity>> getFavoriteBooks() {
-        return songDisplayLocalDataSource.loadFavorites();
+        return bookDisplayLocalDataSource.loadFavorites();
     }
 
     @Override
@@ -63,13 +63,13 @@ public class BookDisplayDataRepository implements BookDisplayRepository {
                 .flatMapCompletable(new Function<BookEntity, CompletableSource>() {
                     @Override
                     public CompletableSource apply(BookEntity bookEntity) throws Exception {
-                        return songDisplayLocalDataSource.addBookToFavorites(bookEntity);
+                        return bookDisplayLocalDataSource.addBookToFavorites(bookEntity);
                     }
                 });
     }
 
     @Override
     public Completable removeBookFromFavorites(String bookId) {
-        return songDisplayLocalDataSource.deleteBookFromFavorites(bookId);
+        return bookDisplayLocalDataSource.deleteBookFromFavorites(bookId);
     }
 }
