@@ -77,4 +77,10 @@ public class FavoriteFragment extends Fragment implements BookFavoriteContract.V
     public void onBookRemoved() {
         //Do nothing yet
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        bookFavoritePresenter.detachView();
+    }
 }

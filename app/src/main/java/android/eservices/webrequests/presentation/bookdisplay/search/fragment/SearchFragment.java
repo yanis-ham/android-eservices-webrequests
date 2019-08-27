@@ -33,7 +33,7 @@ public class SearchFragment extends Fragment implements BookSearchContract.View,
 
     public static final String TAB_NAME = "Search";
     private View rootView;
-    BookSearchContract.Presenter songDisplayPresenter;
+    BookSearchContract.Presenter bookSearchPresenter;
     private SearchView searchView;
     private RecyclerView recyclerView;
     private BookAdapter bookAdapter;
@@ -61,8 +61,8 @@ public class SearchFragment extends Fragment implements BookSearchContract.View,
         setupRecyclerView();
         progressBar = rootView.findViewById(R.id.progress_bar);
 
-        songDisplayPresenter = new BookSearchPresenter(FakeDependencyInjection.getBookDisplayRepository(), new BookToViewModelMapper());
-        songDisplayPresenter.attachView(this);
+        bookSearchPresenter = new BookSearchPresenter(FakeDependencyInjection.getBookDisplayRepository(), new BookToViewModelMapper());
+        bookSearchPresenter.attachView(this);
     }
 
     private void setupSearchView() {
@@ -78,7 +78,7 @@ public class SearchFragment extends Fragment implements BookSearchContract.View,
             @Override
             public boolean onQueryTextChange(final String s) {
                 if (s.length() == 0) {
-                    songDisplayPresenter.cancelSubscription();
+                    bookSearchPresenter.cancelSubscription();
                     progressBar.setVisibility(View.GONE);
                 } else {
                     progressBar.setVisibility(View.VISIBLE);
@@ -94,7 +94,7 @@ public class SearchFragment extends Fragment implements BookSearchContract.View,
                     timer.schedule(new TimerTask() {
                         @Override
                         public void run() {
-                            songDisplayPresenter.searchBooks(s);
+                            bookSearchPresenter.searchBooks(s);
                         }
                     }, sleep);
                 }
@@ -119,9 +119,9 @@ public class SearchFragment extends Fragment implements BookSearchContract.View,
     @Override
     public void onFavoriteToggle(String bookId, boolean isFavorite) {
         if (isFavorite) {
-            songDisplayPresenter.addBookToFavorite(bookId);
+            bookSearchPresenter.addBookToFavorite(bookId);
         } else {
-            songDisplayPresenter.removeBookFromFavorites(bookId);
+            bookSearchPresenter.removeBookFromFavorites(bookId);
         }
     }
 
@@ -133,5 +133,11 @@ public class SearchFragment extends Fragment implements BookSearchContract.View,
     @Override
     public void onBookRemovedFromFavorites() {
         //Do nothing
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        bookSearchPresenter.detachView();
     }
 }
