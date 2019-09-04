@@ -1,13 +1,9 @@
 package android.eservices.webrequests.presentation.bookdisplay.search.fragment;
 
 import android.eservices.webrequests.R;
-import android.eservices.webrequests.data.di.FakeDependencyInjection;
-import android.eservices.webrequests.presentation.bookdisplay.search.BookSearchContract;
-import android.eservices.webrequests.presentation.bookdisplay.search.BookSearchPresenter;
 import android.eservices.webrequests.presentation.bookdisplay.search.adapter.BookActionInterface;
 import android.eservices.webrequests.presentation.bookdisplay.search.adapter.BookAdapter;
 import android.eservices.webrequests.presentation.bookdisplay.search.adapter.BookItemViewModel;
-import android.eservices.webrequests.presentation.bookdisplay.search.mapper.BookToViewModelMapper;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,11 +25,10 @@ import java.util.TimerTask;
 /*
  * TODO : uncheck favorite selection in search results when favorite unchecked from Favorite fragment
  */
-public class SearchFragment extends Fragment implements BookSearchContract.View, BookActionInterface {
+public class SearchFragment extends Fragment implements BookActionInterface {
 
     public static final String TAB_NAME = "Search";
     private View rootView;
-    BookSearchContract.Presenter bookSearchPresenter;
     private SearchView searchView;
     private RecyclerView recyclerView;
     private BookAdapter bookAdapter;
@@ -61,8 +56,6 @@ public class SearchFragment extends Fragment implements BookSearchContract.View,
         setupRecyclerView();
         progressBar = rootView.findViewById(R.id.progress_bar);
 
-        bookSearchPresenter = new BookSearchPresenter(FakeDependencyInjection.getBookDisplayRepository(), new BookToViewModelMapper());
-        bookSearchPresenter.attachView(this);
     }
 
     private void setupSearchView() {
@@ -78,7 +71,7 @@ public class SearchFragment extends Fragment implements BookSearchContract.View,
             @Override
             public boolean onQueryTextChange(final String s) {
                 if (s.length() == 0) {
-                    bookSearchPresenter.cancelSubscription();
+                    //bookSearchPresenter.cancelSubscription();
                     progressBar.setVisibility(View.GONE);
                 } else {
                     progressBar.setVisibility(View.VISIBLE);
@@ -94,7 +87,7 @@ public class SearchFragment extends Fragment implements BookSearchContract.View,
                     timer.schedule(new TimerTask() {
                         @Override
                         public void run() {
-                            bookSearchPresenter.searchBooks(s);
+                            //bookSearchPresenter.searchBooks(s);
                         }
                     }, sleep);
                 }
@@ -110,7 +103,7 @@ public class SearchFragment extends Fragment implements BookSearchContract.View,
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
-    @Override
+    //@Override
     public void displayBooks(List<BookItemViewModel> bookItemViewModelList) {
         progressBar.setVisibility(View.GONE);
         bookAdapter.bindViewModels(bookItemViewModelList);
@@ -119,25 +112,25 @@ public class SearchFragment extends Fragment implements BookSearchContract.View,
     @Override
     public void onFavoriteToggle(String bookId, boolean isFavorite) {
         if (isFavorite) {
-            bookSearchPresenter.addBookToFavorite(bookId);
+            //bookSearchPresenter.addBookToFavorite(bookId);
         } else {
-            bookSearchPresenter.removeBookFromFavorites(bookId);
+            //bookSearchPresenter.removeBookFromFavorites(bookId);
         }
     }
 
-    @Override
+    //@Override
     public void onBookAddedToFavorites() {
         //Do nothing
     }
 
-    @Override
+    //@Override
     public void onBookRemovedFromFavorites() {
         //Do nothing
     }
 
-    @Override
+    //@Override
     public void onDestroy() {
         super.onDestroy();
-        bookSearchPresenter.detachView();
+        //bookSearchPresenter.detachView();
     }
 }

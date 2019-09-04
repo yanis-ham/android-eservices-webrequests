@@ -1,13 +1,9 @@
 package android.eservices.webrequests.presentation.bookdisplay.favorite.fragment;
 
 import android.eservices.webrequests.R;
-import android.eservices.webrequests.data.di.FakeDependencyInjection;
-import android.eservices.webrequests.presentation.bookdisplay.favorite.BookFavoriteContract;
-import android.eservices.webrequests.presentation.bookdisplay.favorite.BookFavoritePresenter;
 import android.eservices.webrequests.presentation.bookdisplay.favorite.adapter.BookDetailActionInterface;
 import android.eservices.webrequests.presentation.bookdisplay.favorite.adapter.BookDetailAdapter;
 import android.eservices.webrequests.presentation.bookdisplay.favorite.adapter.BookDetailViewModel;
-import android.eservices.webrequests.presentation.bookdisplay.favorite.mapper.BookEntityToDetailViewModelMapper;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,11 +17,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-public class FavoriteFragment extends Fragment implements BookFavoriteContract.View, BookDetailActionInterface {
+public class FavoriteFragment extends Fragment implements BookDetailActionInterface {
 
     public static final String TAB_NAME = "Favorites";
     private View rootView;
-    BookFavoriteContract.Presenter bookFavoritePresenter;
     private RecyclerView recyclerView;
     private BookDetailAdapter bookAdapter;
 
@@ -49,9 +44,6 @@ public class FavoriteFragment extends Fragment implements BookFavoriteContract.V
         super.onActivityCreated(savedInstanceState);
         setupRecyclerView();
 
-        bookFavoritePresenter = new BookFavoritePresenter(FakeDependencyInjection.getBookDisplayRepository(), new BookEntityToDetailViewModelMapper());
-        bookFavoritePresenter.attachView(this);
-        bookFavoritePresenter.getFavorites();
     }
 
     private void setupRecyclerView() {
@@ -61,7 +53,8 @@ public class FavoriteFragment extends Fragment implements BookFavoriteContract.V
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
-    @Override
+    //TODO
+    //@Override
     public void displayFavorites(List<BookDetailViewModel> bookDetailViewModelList) {
         bookAdapter.bindViewModels(bookDetailViewModelList);
 
@@ -69,11 +62,12 @@ public class FavoriteFragment extends Fragment implements BookFavoriteContract.V
 
     @Override
     public void onRemoveFavorite(String bookId) {
-        bookFavoritePresenter.removeBookFromFavorites(bookId);
+        //TODO : bookFavoritePresenter.removeBookFromFavorites(bookId);
         System.out.println("Remove book " + bookId);
     }
 
-    @Override
+    //TODO
+    //@Override
     public void onBookRemoved() {
         //Do nothing yet
     }
@@ -81,6 +75,6 @@ public class FavoriteFragment extends Fragment implements BookFavoriteContract.V
     @Override
     public void onDestroy() {
         super.onDestroy();
-        bookFavoritePresenter.detachView();
+        //TODO : bookFavoritePresenter.detachView();
     }
 }

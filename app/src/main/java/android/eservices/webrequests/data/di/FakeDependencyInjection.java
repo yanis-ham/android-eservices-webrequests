@@ -1,15 +1,6 @@
 package android.eservices.webrequests.data.di;
 
 import android.content.Context;
-import android.eservices.webrequests.data.api.BookDisplayService;
-import android.eservices.webrequests.data.db.BookDatabase;
-import android.eservices.webrequests.data.repository.bookdisplay.BookDisplayDataRepository;
-import android.eservices.webrequests.data.repository.bookdisplay.BookDisplayRepository;
-import android.eservices.webrequests.data.repository.bookdisplay.local.BookDisplayLocalDataSource;
-import android.eservices.webrequests.data.repository.bookdisplay.mapper.BookToBookEntityMapper;
-import android.eservices.webrequests.data.repository.bookdisplay.remote.BookDisplayRemoteDataSource;
-
-import androidx.room.Room;
 
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.google.gson.Gson;
@@ -30,30 +21,13 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class FakeDependencyInjection {
 
-    private static BookDisplayService bookDisplayService;
     private static Retrofit retrofit;
     private static Gson gson;
-    private static BookDisplayRepository bookDisplayRepository;
-    private static BookDatabase bookDatabase;
     private static Context applicationContext;
 
-    public static BookDisplayRepository getBookDisplayRepository() {
-        if (bookDisplayRepository == null) {
-            bookDisplayRepository = new BookDisplayDataRepository(
-                    new BookDisplayLocalDataSource(getBookDatabase()),
-                    new BookDisplayRemoteDataSource(getBookDisplayService()),
-                    new BookToBookEntityMapper()
-            );
-        }
-        return bookDisplayRepository;
-    }
+    //public static BookDisplayRepository getBookDisplayRepository()
 
-    public static BookDisplayService getBookDisplayService() {
-        if (bookDisplayService == null) {
-            bookDisplayService = getRetrofit().create(BookDisplayService.class);
-        }
-        return bookDisplayService;
-    }
+    //public static BookDisplayService getBookDisplayService()
 
     public static Retrofit getRetrofit() {
         if (retrofit == null) {
@@ -85,11 +59,6 @@ public class FakeDependencyInjection {
         applicationContext = context;
     }
 
-    public static BookDatabase getBookDatabase() {
-        if (bookDatabase == null) {
-            bookDatabase = Room.databaseBuilder(applicationContext,
-                    BookDatabase.class, "book-database").build();
-        }
-        return bookDatabase;
-    }
+    //public static BookDatabase getBookDatabase()
+
 }
