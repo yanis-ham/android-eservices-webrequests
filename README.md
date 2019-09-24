@@ -21,6 +21,10 @@ Toutes les infos sur l'API peuvent être trouvées [ici](https://developers.goog
 
 Les flux de données de l'application sont gérés avec [RxJava 2](https://github.com/ReactiveX/RxJava). 
 
+
+Jettez un oeil à la classe Application ? A quoi sert-elle ?
+
+
 ### Objectifs
 Ce TP est découpé en deux partie qui se suivent, faites d'abord l'une puis l'autre.
 
@@ -43,4 +47,4 @@ Pour faire ça il va falloir :
 - [ ] Mettre à jour la partie Repository en créant les méthodes de récupération et suppression de favoris.
 - [ ] Ecrire l'algorithme qui permet de transformer les résultats de la recherche en indiquant ceux qui sont déjà en favoris.
 - [ ] Créer le Presenter pour la partie Favoris et le lier à la vue.
-- [ ] Tester tout ça, utiliser Stetho 
+- [ ] Tester tout ça, utiliser [Stetho](http://facebook.github.io/stetho/) 
