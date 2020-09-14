@@ -8,6 +8,7 @@ import android.eservices.webrequests.data.repository.bookdisplay.BookDisplayRepo
 import android.eservices.webrequests.data.repository.bookdisplay.local.BookDisplayLocalDataSource;
 import android.eservices.webrequests.data.repository.bookdisplay.mapper.BookToBookEntityMapper;
 import android.eservices.webrequests.data.repository.bookdisplay.remote.BookDisplayRemoteDataSource;
+import android.eservices.webrequests.presentation.viewmodel.ViewModelFactory;
 
 import androidx.room.Room;
 
@@ -36,6 +37,15 @@ public class FakeDependencyInjection {
     private static BookDisplayRepository bookDisplayRepository;
     private static BookDatabase bookDatabase;
     private static Context applicationContext;
+    private static ViewModelFactory viewModelFactory;
+
+    public static ViewModelFactory getViewModelFactory() {
+        if (viewModelFactory == null) {
+            viewModelFactory = new ViewModelFactory(getBookDisplayRepository());
+        }
+        return viewModelFactory;
+    }
+
 
     public static BookDisplayRepository getBookDisplayRepository() {
         if (bookDisplayRepository == null) {

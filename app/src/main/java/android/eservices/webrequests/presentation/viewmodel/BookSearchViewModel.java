@@ -1,30 +1,44 @@
-package android.eservices.webrequests.presentation.bookdisplay.search;
+package android.eservices.webrequests.presentation.viewmodel;
 
 import android.eservices.webrequests.data.api.model.BookSearchResponse;
 import android.eservices.webrequests.data.repository.bookdisplay.BookDisplayRepository;
+import android.eservices.webrequests.presentation.bookdisplay.search.adapter.BookItemViewModel;
 import android.eservices.webrequests.presentation.bookdisplay.search.mapper.BookToViewModelMapper;
+
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
+
+import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.observers.DisposableCompletableObserver;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 
-public class BookSearchPresenter implements BookSearchContract.Presenter {
-
+public class BookSearchViewModel extends ViewModel {
     private BookDisplayRepository bookDisplayRepository;
-    private BookSearchContract.View view;
     private CompositeDisposable compositeDisposable;
     private BookToViewModelMapper bookToViewModelMapper;
 
-    public BookSearchPresenter(BookDisplayRepository bookDisplayRepository, BookToViewModelMapper bookToViewModelMapper) {
+    public BookSearchViewModel(BookDisplayRepository bookDisplayRepository) {
         this.bookDisplayRepository = bookDisplayRepository;
         this.compositeDisposable = new CompositeDisposable();
-        this.bookToViewModelMapper = bookToViewModelMapper;
+        this.bookToViewModelMapper = new BookToViewModelMapper();
     }
 
-    @Override
+    private MutableLiveData<List<BookItemViewModel>> books = new MutableLiveData<List<BookItemViewModel>>();
+    private MutableLiveData<Boolean> isDataLoading = new MutableLiveData<Boolean>();
+
+    public MutableLiveData<List<BookItemViewModel>> getBooks() {
+        return books;
+    }
+
+    public MutableLiveData<Boolean> getIsDataLoading() {
+        return isDataLoading;
+    }
+
     public void searchBooks(String keywords) {
+        isDataLoading.postValue(true);
         compositeDisposable.clear();
         compositeDisposable.add(bookDisplayRepository.getBookSearchResponse(keywords)
                 .subscribeOn(Schedulers.io())
@@ -33,19 +47,26 @@ public class BookSearchPresenter implements BookSearchContract.Presenter {
 
                     @Override
                     public void onSuccess(BookSearchResponse bookSearchResponse) {
-                        // work with the resulting todos
-                        view.displayBooks(bookToViewModelMapper.map(bookSearchResponse.getBookList()));
+                        books.setValue(bookToViewModelMapper.map(bookSearchResponse.getBookList()));
+                        isDataLoading.setValue(false);
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         // handle the error case
+                        //Yet, do not do nothing in this app
                         System.out.println(e.toString());
+                        isDataLoading.setValue(false);
                     }
                 }));
-
     }
 
+    public void cancelSubscription() {
+        compositeDisposable.clear();
+        isDataLoading.setValue(false);
+    }
+
+}/*
     @Override
     public void addBookToFavorite(String bookId) {
         compositeDisposable.add(bookDisplayRepository.addBookToFavorites(bookId)
@@ -81,20 +102,4 @@ public class BookSearchPresenter implements BookSearchContract.Presenter {
                     }
                 }));
     }
-
-    @Override
-    public void attachView(BookSearchContract.View view) {
-        this.view = view;
-    }
-
-    @Override
-    public void cancelSubscription() {
-        compositeDisposable.clear();
-    }
-
-    @Override
-    public void detachView() {
-        compositeDisposable.dispose();
-        view = null;
-    }
-}
+*/
