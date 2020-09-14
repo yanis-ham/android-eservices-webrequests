@@ -35,7 +35,7 @@ Premier objectif, pouvoir récupérer les livres correspondant à la recherche d
 Pour ça tout est à mettre en place :
 - [x] Préparer l'architecture
 - [ ] Créer l'interface Retrofit et mettre en place la méthode permettant de fournir une instance du service dans notre fausse DI.
-- [ ] Créer les differents Repository et DataSources avec les bonnes méthodes qui seront appelées depuis le Presenter.
+- [ ] Créer les differents Repository et DataSources avec les bonnes méthodes qui seront appelées depuis le ViewModel.
 - [ ] Corriger le ViewModel pour gérer la recherche, et implémenter son fonctionnement dans le Fragment. Gérer la création du ViewModel.
 - [ ] Préparer le mapper qui prépare les objets reçus dans le ViewModel à être affichés dans la vue.
 - [ ] Initialiser et appeler le ViewModel depuis la vue.
