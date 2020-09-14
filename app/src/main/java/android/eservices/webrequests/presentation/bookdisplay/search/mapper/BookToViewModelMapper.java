@@ -1,7 +1,7 @@
 package android.eservices.webrequests.presentation.bookdisplay.search.mapper;
 
 import android.eservices.webrequests.data.api.model.Book;
-import android.eservices.webrequests.presentation.bookdisplay.search.adapter.BookItemViewModel;
+import android.eservices.webrequests.presentation.bookdisplay.search.adapter.BookViewItem;
 import android.text.TextUtils;
 
 import java.util.ArrayList;
@@ -9,28 +9,28 @@ import java.util.List;
 
 public class BookToViewModelMapper {
 
-    private BookItemViewModel map(Book book) {
-        BookItemViewModel bookItemViewModel = new BookItemViewModel();
-        bookItemViewModel.setBookTitle(book.getVolumeInfo().getTitle());
-        bookItemViewModel.setBookId(book.getId());
+    private BookViewItem map(Book book) {
+        BookViewItem bookViewItem = new BookViewItem();
+        bookViewItem.setBookTitle(book.getVolumeInfo().getTitle());
+        bookViewItem.setBookId(book.getId());
         if (book.getVolumeInfo().getImageLinks() != null) {
-            bookItemViewModel.setIconUrl(book.getVolumeInfo().getImageLinks().getThumbnail());
+            bookViewItem.setIconUrl(book.getVolumeInfo().getImageLinks().getThumbnail());
         }
-        bookItemViewModel.setFavorite(book.isFavorite());
+        bookViewItem.setFavorite(book.isFavorite());
         if (book.getVolumeInfo().getAuthorList() == null) {
-            bookItemViewModel.setBookAuthors("N.C.");
+            bookViewItem.setBookAuthors("N.C.");
         } else {
-            bookItemViewModel.setBookAuthors(TextUtils.join(", ", book.getVolumeInfo().getAuthorList()));
+            bookViewItem.setBookAuthors(TextUtils.join(", ", book.getVolumeInfo().getAuthorList()));
         }
 
-        return bookItemViewModel;
+        return bookViewItem;
     }
 
-    public List<BookItemViewModel> map(List<Book> bookList) {
-        List<BookItemViewModel> bookItemViewModelList = new ArrayList<>();
+    public List<BookViewItem> map(List<Book> bookList) {
+        List<BookViewItem> bookViewItemList = new ArrayList<>();
         for (Book book : bookList) {
-            bookItemViewModelList.add(map(book));
+            bookViewItemList.add(map(book));
         }
-        return bookItemViewModelList;
+        return bookViewItemList;
     }
 }

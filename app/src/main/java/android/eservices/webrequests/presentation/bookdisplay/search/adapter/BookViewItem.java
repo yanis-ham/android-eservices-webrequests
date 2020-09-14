@@ -1,6 +1,6 @@
 package android.eservices.webrequests.presentation.bookdisplay.search.adapter;
 
-public class BookItemViewModel {
+public class BookViewItem {
 
     private String bookId;
     private String iconUrl;

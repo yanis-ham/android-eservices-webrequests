@@ -4,7 +4,7 @@ import android.eservices.webrequests.R;
 import android.eservices.webrequests.data.di.FakeDependencyInjection;
 import android.eservices.webrequests.presentation.bookdisplay.favorite.adapter.BookDetailActionInterface;
 import android.eservices.webrequests.presentation.bookdisplay.favorite.adapter.BookDetailAdapter;
-import android.eservices.webrequests.presentation.bookdisplay.favorite.adapter.BookDetailViewModel;
+import android.eservices.webrequests.presentation.bookdisplay.favorite.adapter.BookDetailViewItem;
 import android.eservices.webrequests.presentation.viewmodel.BookFavoriteViewModel;
 import android.eservices.webrequests.presentation.viewmodel.Event;
 import android.os.Bundle;
@@ -56,10 +56,10 @@ public class FavoriteFragment extends Fragment implements BookDetailActionInterf
         bookFavoriteViewModel = new ViewModelProvider(requireActivity(), FakeDependencyInjection.getViewModelFactory()).get(BookFavoriteViewModel.class);
         System.out.println("FVVM is " + bookFavoriteViewModel);
 
-        bookFavoriteViewModel.getFavorites().observe(getViewLifecycleOwner(), new Observer<List<BookDetailViewModel>>() {
+        bookFavoriteViewModel.getFavorites().observe(getViewLifecycleOwner(), new Observer<List<BookDetailViewItem>>() {
             @Override
-            public void onChanged(List<BookDetailViewModel> bookDetailViewModelList) {
-                bookAdapter.bindViewModels(bookDetailViewModelList);
+            public void onChanged(List<BookDetailViewItem> bookDetailViewItemList) {
+                bookAdapter.bindViewModels(bookDetailViewItemList);
             }
         });
 

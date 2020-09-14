@@ -28,7 +28,7 @@ public class BookDetailAdapter extends RecyclerView.Adapter<BookDetailAdapter.Bo
         private TextView publishedTextView;
         private ImageView iconImageView;
         private View v;
-        private BookDetailViewModel bookDetailViewModel;
+        private BookDetailViewItem bookDetailViewItem;
         private BookDetailActionInterface bookDetailActionInterface;
         private Switch favoriteSwitch;
 
@@ -51,27 +51,27 @@ public class BookDetailAdapter extends RecyclerView.Adapter<BookDetailAdapter.Bo
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                     if (!b) {
-                        bookDetailActionInterface.onRemoveFavorite(bookDetailViewModel.getBookId());
+                        bookDetailActionInterface.onRemoveFavorite(bookDetailViewItem.getBookId());
                     }
                 }
             });
         }
 
-        void bind(BookDetailViewModel bookDetailViewModel) {
-            this.bookDetailViewModel = bookDetailViewModel;
-            titleTextView.setText(bookDetailViewModel.getBookTitle());
-            authorsTextView.setText(bookDetailViewModel.getBookAuthors());
-            languageTextView.setText(bookDetailViewModel.getBookLanguage());
-            descriptionTextView.setText(bookDetailViewModel.getBookDescription());
+        void bind(BookDetailViewItem bookDetailViewItem) {
+            this.bookDetailViewItem = bookDetailViewItem;
+            titleTextView.setText(bookDetailViewItem.getBookTitle());
+            authorsTextView.setText(bookDetailViewItem.getBookAuthors());
+            languageTextView.setText(bookDetailViewItem.getBookLanguage());
+            descriptionTextView.setText(bookDetailViewItem.getBookDescription());
             favoriteSwitch.setChecked(true);
-            if (bookDetailViewModel.getBookDescription() == null) {
+            if (bookDetailViewItem.getBookDescription() == null) {
                 descriptionTextView.setVisibility(View.GONE);
             } else {
                 descriptionTextView.setVisibility(View.VISIBLE);
             }
-            publishedTextView.setText(bookDetailViewModel.getBookPublishedDate());
+            publishedTextView.setText(bookDetailViewItem.getBookPublishedDate());
             Glide.with(v)
-                    .load(bookDetailViewModel.getIconUrl())
+                    .load(bookDetailViewItem.getIconUrl())
                     .centerCrop()
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .into(iconImageView);
@@ -80,18 +80,18 @@ public class BookDetailAdapter extends RecyclerView.Adapter<BookDetailAdapter.Bo
 
     }
 
-    private List<BookDetailViewModel> bookDetailViewModelList;
+    private List<BookDetailViewItem> bookDetailViewItemList;
     private BookDetailActionInterface bookDetailActionInterface;
 
     // Provide a suitable constructor (depends on the kind of dataset)
     public BookDetailAdapter(BookDetailActionInterface bookDetailActionInterface) {
-        bookDetailViewModelList = new ArrayList<>();
+        bookDetailViewItemList = new ArrayList<>();
         this.bookDetailActionInterface = bookDetailActionInterface;
     }
 
-    public void bindViewModels(List<BookDetailViewModel> bookItemViewModelList) {
-        this.bookDetailViewModelList.clear();
-        this.bookDetailViewModelList.addAll(bookItemViewModelList);
+    public void bindViewModels(List<BookDetailViewItem> bookItemViewModelList) {
+        this.bookDetailViewItemList.clear();
+        this.bookDetailViewItemList.addAll(bookItemViewModelList);
         notifyDataSetChanged();
     }
 
@@ -109,14 +109,14 @@ public class BookDetailAdapter extends RecyclerView.Adapter<BookDetailAdapter.Bo
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(BookDetailViewHolder holder, int position) {
-        holder.bind(bookDetailViewModelList.get(position));
+        holder.bind(bookDetailViewItemList.get(position));
     }
 
 
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return bookDetailViewModelList.size();
+        return bookDetailViewItemList.size();
     }
 
 

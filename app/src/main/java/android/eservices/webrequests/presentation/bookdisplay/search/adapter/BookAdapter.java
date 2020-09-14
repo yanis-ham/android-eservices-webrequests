@@ -25,7 +25,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
         private TextView authorsTextView;
         private ImageView iconImageView;
         private View v;
-        private BookItemViewModel bookItemViewModel;
+        private BookViewItem bookViewItem;
         private BookActionInterface bookActionInterface;
         private Switch favoriteSwitch;
 
@@ -44,18 +44,18 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
             favoriteSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                    bookActionInterface.onFavoriteToggle(bookItemViewModel.getBookId(), b);
+                    bookActionInterface.onFavoriteToggle(bookViewItem.getBookId(), b);
                 }
             });
         }
 
-        void bind(BookItemViewModel bookItemViewModel) {
-            this.bookItemViewModel = bookItemViewModel;
-            titleTextView.setText(bookItemViewModel.getBookTitle());
-            authorsTextView.setText(bookItemViewModel.getBookAuthors());
-            favoriteSwitch.setChecked(bookItemViewModel.isFavorite());
+        void bind(BookViewItem bookViewItem) {
+            this.bookViewItem = bookViewItem;
+            titleTextView.setText(bookViewItem.getBookTitle());
+            authorsTextView.setText(bookViewItem.getBookAuthors());
+            favoriteSwitch.setChecked(bookViewItem.isFavorite());
             Glide.with(v)
-                    .load(bookItemViewModel.getIconUrl())
+                    .load(bookViewItem.getIconUrl())
                     .centerCrop()
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .circleCrop()
@@ -65,18 +65,18 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
 
     }
 
-    private List<BookItemViewModel> bookItemViewModelList;
+    private List<BookViewItem> bookViewItemList;
     private BookActionInterface bookActionInterface;
 
     // Provide a suitable constructor (depends on the kind of dataset)
     public BookAdapter(BookActionInterface bookActionInterface) {
-        bookItemViewModelList = new ArrayList<>();
+        bookViewItemList = new ArrayList<>();
         this.bookActionInterface = bookActionInterface;
     }
 
-    public void bindViewModels(List<BookItemViewModel> bookItemViewModelList) {
-        this.bookItemViewModelList.clear();
-        this.bookItemViewModelList.addAll(bookItemViewModelList);
+    public void bindViewModels(List<BookViewItem> bookViewItemList) {
+        this.bookViewItemList.clear();
+        this.bookViewItemList.addAll(bookViewItemList);
         notifyDataSetChanged();
     }
 
@@ -94,14 +94,14 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.BookViewHolder
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(BookViewHolder holder, int position) {
-        holder.bind(bookItemViewModelList.get(position));
+        holder.bind(bookViewItemList.get(position));
     }
 
 
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return bookItemViewModelList.size();
+        return bookViewItemList.size();
     }
 
 

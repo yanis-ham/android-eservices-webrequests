@@ -1,6 +1,6 @@
 package android.eservices.webrequests.presentation.bookdisplay.favorite.adapter;
 
-public class BookDetailViewModel {
+public class BookDetailViewItem {
 
     private String bookId;
     private String iconUrl;
