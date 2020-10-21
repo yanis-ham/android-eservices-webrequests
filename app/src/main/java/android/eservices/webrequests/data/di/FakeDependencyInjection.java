@@ -2,15 +2,8 @@ package android.eservices.webrequests.data.di;
 
 import android.content.Context;
 import android.eservices.webrequests.data.api.BookDisplayService;
-import android.eservices.webrequests.data.db.BookDatabase;
-import android.eservices.webrequests.data.repository.bookdisplay.BookDisplayDataRepository;
 import android.eservices.webrequests.data.repository.bookdisplay.BookDisplayRepository;
-import android.eservices.webrequests.data.repository.bookdisplay.local.BookDisplayLocalDataSource;
-import android.eservices.webrequests.data.repository.bookdisplay.mapper.BookToBookEntityMapper;
-import android.eservices.webrequests.data.repository.bookdisplay.remote.BookDisplayRemoteDataSource;
 import android.eservices.webrequests.presentation.viewmodel.ViewModelFactory;
-
-import androidx.room.Room;
 
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.google.gson.Gson;
@@ -35,19 +28,19 @@ public class FakeDependencyInjection {
     private static Retrofit retrofit;
     private static Gson gson;
     private static BookDisplayRepository bookDisplayRepository;
-    private static BookDatabase bookDatabase;
+    //private static BookDatabase bookDatabase;
     private static Context applicationContext;
     private static ViewModelFactory viewModelFactory;
 
     public static ViewModelFactory getViewModelFactory() {
-        if (viewModelFactory == null) {
+        /*if (viewModelFactory == null) {
             viewModelFactory = new ViewModelFactory(getBookDisplayRepository());
-        }
+        }*/
         return viewModelFactory;
     }
 
 
-    public static BookDisplayRepository getBookDisplayRepository() {
+    /*public static BookDisplayRepository getBookDisplayRepository() {
         if (bookDisplayRepository == null) {
             bookDisplayRepository = new BookDisplayDataRepository(
                     new BookDisplayLocalDataSource(getBookDatabase()),
@@ -56,7 +49,7 @@ public class FakeDependencyInjection {
             );
         }
         return bookDisplayRepository;
-    }
+    }*/
 
     public static BookDisplayService getBookDisplayService() {
         if (bookDisplayService == null) {
@@ -95,11 +88,11 @@ public class FakeDependencyInjection {
         applicationContext = context;
     }
 
-    public static BookDatabase getBookDatabase() {
+    /*public static BookDatabase getBookDatabase() {
         if (bookDatabase == null) {
             bookDatabase = Room.databaseBuilder(applicationContext,
                     BookDatabase.class, "book-database").build();
         }
         return bookDatabase;
-    }
+    }*/
 }

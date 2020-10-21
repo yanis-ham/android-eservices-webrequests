@@ -1,7 +1,7 @@
 package android.eservices.webrequests.presentation.bookdisplay;
 
 import android.eservices.webrequests.R;
-import android.eservices.webrequests.presentation.bookdisplay.favorite.fragment.FavoriteFragment;
+//import android.eservices.webrequests.presentation.bookdisplay.favorite.fragment.FavoriteFragment;
 import android.eservices.webrequests.presentation.bookdisplay.search.fragment.SearchFragment;
 import android.os.Bundle;
 
@@ -25,7 +25,7 @@ public class BookDisplayActivity extends AppCompatActivity {
         viewPager = findViewById(R.id.tab_viewpager);
 
         final SearchFragment searchFragment = SearchFragment.newInstance();
-        final FavoriteFragment fragmentTwo = FavoriteFragment.newInstance();
+        //final FavoriteFragment fragmentTwo = FavoriteFragment.newInstance();
 
         viewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
             @Override
@@ -33,7 +33,8 @@ public class BookDisplayActivity extends AppCompatActivity {
                 if (position == 0) {
                     return searchFragment;
                 }
-                return fragmentTwo;
+                //changeTo fragmentTwo after finishing the favoriteFrag
+                return searchFragment;
             }
 
             @Override
@@ -41,7 +42,7 @@ public class BookDisplayActivity extends AppCompatActivity {
                 if (position == 0) {
                     return SearchFragment.TAB_NAME;
                 }
-                return FavoriteFragment.TAB_NAME;
+                return searchFragment.TAB_NAME;
             }
 
             @Override
